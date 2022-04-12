@@ -1,0 +1,8 @@
+# Specify filepatterns you want git to ignore.
+.vs
+.vscode
+.idea
+bin
+obj
+*.csproj.user
+*.sln.DotSettings.user

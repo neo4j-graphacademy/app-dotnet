@@ -1,0 +1,295 @@
+[
+  {
+    "actors": [
+      {
+        "name": "Tim Robbins",
+        "tmdbId": "0000209"
+      },
+      {
+        "name": "William Sadler",
+        "tmdbId": "0006669"
+      },
+      {
+        "name": "Bob Gunton",
+        "tmdbId": "0348409"
+      },
+      {
+        "name": "Morgan Freeman",
+        "tmdbId": "0000151"
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "plot": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "year": 1994,
+    "genres": [
+      {
+        "link": "/genres/Drama",
+        "name": "Drama"
+      },
+      {
+        "link": "/genres/Crime",
+        "name": "Crime"
+      }
+    ],
+    "directors": [
+      {
+        "name": "Frank Darabont",
+        "tmdbId": "0001104"
+      }
+    ],
+    "imdbRating": 9.3,
+    "tmdbId": "0111161",
+    "title": "Shawshank Redemption, The",
+    "poster": "https://image.tmdb.org/t/p/w440_and_h660_face/5KCVkau1HEl7ZzfPsKAPM0sMiKc.jpg"
+  },
+  {
+    "actors": [
+      {
+        "name": "Richard S. Castellano",
+        "tmdbId": "0144710"
+      },
+      {
+        "name": "James Caan",
+        "tmdbId": "0001001"
+      },
+      {
+        "name": "Al Pacino",
+        "tmdbId": "0000199"
+      },
+      {
+        "name": "Marlon Brando",
+        "tmdbId": "0000008"
+      }
+    ],
+    "languages": [
+      "English",
+      " Italian",
+      " Latin"
+    ],
+    "plot": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+    "year": 1972,
+    "genres": [
+      {
+        "link": "/genres/Drama",
+        "name": "Drama"
+      },
+      {
+        "link": "/genres/Crime",
+        "name": "Crime"
+      }
+    ],
+    "directors": [
+      {
+        "name": "Francis Ford Coppola",
+        "tmdbId": "0000338"
+      }
+    ],
+    "imdbRating": 9.2,
+    "tmdbId": "0068646",
+    "title": "Godfather, The",
+    "poster": "https://image.tmdb.org/t/p/w440_and_h660_face/iVZ3JAcAjmguGPnRNfWFOtLHOuY.jpg",
+    "favorite": true
+  },
+  {
+    "actors": [
+      {
+        "name": "Al Pacino",
+        "tmdbId": "0000199"
+      },
+      {
+        "name": "Robert De Niro",
+        "tmdbId": "0000134"
+      },
+      {
+        "name": "Robert Duvall",
+        "tmdbId": "0000380"
+      },
+      {
+        "name": "Diane Keaton",
+        "tmdbId": "0000473"
+      }
+    ],
+    "languages": [
+      "English",
+      " Italian",
+      " Spanish",
+      " Latin",
+      " Sicilian"
+    ],
+    "plot": "The early life and career of Vito Corleone in 1920s New York is portrayed while his son, Michael, expands and tightens his grip on his crime syndicate stretching from Lake Tahoe, Nevada to pre-revolution 1958 Cuba.",
+    "year": 1974,
+    "genres": [
+      {
+        "link": "/genres/Crime",
+        "name": "Crime"
+      },
+      {
+        "link": "/genres/Drama",
+        "name": "Drama"
+      }
+    ],
+    "directors": [
+      {
+        "name": "Francis Ford Coppola",
+        "tmdbId": "0000338"
+      }
+    ],
+    "imdbRating": 9.0,
+    "tmdbId": "0071562",
+    "title": "Godfather: Part II, The",
+    "poster": "https://image.tmdb.org/t/p/w440_and_h660_face/amvmeQWheahG3StKwIE1f7jRnkZ.jpg",
+    "favorite": true
+  },
+  {
+    "actors": [
+      {
+        "name": "Michael Caine",
+        "tmdbId": "0000323"
+      },
+      {
+        "name": "Heath Ledger",
+        "tmdbId": "0005132"
+      },
+      {
+        "name": "Aaron Eckhart",
+        "tmdbId": "0001173"
+      },
+      {
+        "name": "Christian Bale",
+        "tmdbId": "0000288"
+      }
+    ],
+    "languages": [
+      "English",
+      " Mandarin"
+    ],
+    "plot": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, the caped crusader must come to terms with one of the greatest psychological tests of his ability to fight injustice.",
+    "year": 2008,
+    "genres": [
+      {
+        "link": "/genres/Action",
+        "name": "Action"
+      },
+      {
+        "link": "/genres/Crime",
+        "name": "Crime"
+      },
+      {
+        "link": "/genres/Drama",
+        "name": "Drama"
+      },
+      {
+        "link": "/genres/IMAX",
+        "name": "IMAX"
+      }
+    ],
+    "directors": [
+      {
+        "name": "Christopher Nolan",
+        "tmdbId": "0634240"
+      }
+    ],
+    "imdbRating": 9.0,
+    "tmdbId": "0468569",
+    "title": "Dark Knight, The",
+    "poster": "https://image.tmdb.org/t/p/w440_and_h660_face/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "favorite": false
+  },
+  {
+    "actors": [
+      {
+        "name": "Lee J. Cobb",
+        "tmdbId": "0002011"
+      },
+      {
+        "name": "E.G. Marshall",
+        "tmdbId": "0550855"
+      },
+      {
+        "name": "Martin Balsam",
+        "tmdbId": "0000842"
+      },
+      {
+        "name": "John Fiedler",
+        "tmdbId": "0275835"
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "plot": "A jury holdout attempts to prevent a miscarriage of justice by forcing his colleagues to reconsider the evidence.",
+    "year": 1957,
+    "genres": [
+      {
+        "link": "/genres/Drama",
+        "name": "Drama"
+      }
+    ],
+    "directors": [
+      {
+        "name": "Sidney Lumet",
+        "tmdbId": "0001486"
+      }
+    ],
+    "imdbRating": 8.9,
+    "tmdbId": "0050083",
+    "title": "12 Angry Men",
+    "poster": "https://image.tmdb.org/t/p/w440_and_h660_face/7sf9CgJz30aXDvrg7DYYUQ2U91T.jpg"
+  },
+  {
+    "actors": [
+      {
+        "name": "Helena Bonham Carter",
+        "tmdbId": "0000307"
+      },
+      {
+        "name": "Meat Loaf",
+        "tmdbId": "0001533"
+      },
+      {
+        "name": "Brad Pitt",
+        "tmdbId": "0000093"
+      },
+      {
+        "name": "Edward Norton",
+        "tmdbId": "0001570"
+      }
+    ],
+    "languages": [
+      "English"
+    ],
+    "plot": "An insomniac office worker, looking for a way to change his life, crosses paths with a devil-may-care soap maker, forming an underground fight club that evolves into something much, much more...",
+    "year": 1999,
+    "genres": [
+      {
+        "link": "/genres/Drama",
+        "name": "Drama"
+      },
+      {
+        "link": "/genres/Thriller",
+        "name": "Thriller"
+      },
+      {
+        "link": "/genres/Action",
+        "name": "Action"
+      },
+      {
+        "link": "/genres/Crime",
+        "name": "Crime"
+      }
+    ],
+    "directors": [
+      {
+        "name": "David Fincher",
+        "tmdbId": "0000399"
+      }
+    ],
+    "imdbRating": 8.9,
+    "tmdbId": "0137523",
+    "title": "Fight Club",
+    "poster": "https://image.tmdb.org/t/p/w440_and_h660_face/wR5HZWdVpcXx9sevV1bQi7rP4op.jpg",
+    "favorite": true
+  }
+]
