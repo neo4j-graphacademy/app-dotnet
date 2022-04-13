@@ -22,7 +22,7 @@ namespace Neoflix.Challenges
         {
             var service = new MovieService(Neo4j.Driver);
 
-            var output = await service.GetByIdAsync(LockStock);
+            var output = await service.FindByIdAsync(LockStock);
 
             Assert.Equal(LockStock, output["tmdbId"].As<string>());
             Assert.Equal("Lock, Stock & Two Smoking Barrels", output["title"].As<string>());

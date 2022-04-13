@@ -8,6 +8,13 @@ namespace Neoflix.Controllers
     [ApiController]
     public class GenresController : ControllerBase
     {
+        /// <summary>
+        /// Get a full list of Genres from the database along with a poster and movie count.
+        /// </summary>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         [HttpGet]
         public async Task<IActionResult> ListAsync()
         {
@@ -19,6 +26,15 @@ namespace Neoflix.Controllers
             return Ok(genres);
         }
 
+        /// <summary>
+        /// Get information on a genre with a name that matches the name URL parameter.<br/>
+        /// If the genre is not found, a 404 should be thrown.
+        /// </summary>
+        /// <param name="name">Genre name.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         [HttpGet("{name}")]
         public async Task<IActionResult> GetGenreByNameAsync(string name)
         {
@@ -33,6 +49,14 @@ namespace Neoflix.Controllers
             return Ok(genre);
         }
 
+        /// <summary>
+        /// Get a paginated list of movies that are listed in the genre whose name matches the name URL parameter.
+        /// </summary>
+        /// <param name="name">Genre name.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         [HttpGet("{name}/movies")]
         public async Task<IActionResult> GetMoviesByGenreAsync(string name)
         {

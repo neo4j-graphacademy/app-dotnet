@@ -8,6 +8,15 @@ namespace Neoflix.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        /// <summary>
+        /// invokes the `Neo4jStrategy` in `src/passport/neo4j.strategy.js`, <br/>
+        /// which, when implemented, attempts to authenticate the user against the Neo4j database.
+        /// </summary>
+        /// <param name="loginDto">Login data.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::login[]
         [HttpPost("login")]
         public async Task<object> LoginAsync([FromBody]LoginDto loginDto)
@@ -24,6 +33,15 @@ namespace Neoflix.Controllers
         }
         // end::login[]
 
+        /// <summary>
+        /// Create a new User node in the database with an encrypted password before returning a User record which includes a "token" property.
+        /// This token is then used 
+        /// </summary>
+        /// <param name="registerDto">Registration data.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::register[]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterDto registerDto)

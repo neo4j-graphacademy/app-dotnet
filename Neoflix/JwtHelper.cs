@@ -6,31 +6,33 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Neoflix
 {
-    public class Jwts
+    /// <summary>
+    /// Helper class for working with JSON Web tokens.<br/>
+    /// for more info on JSON Web tokens visit: https://jwt.io/.
+    /// </summary>
+    public static class JwtHelper
     {
         private static readonly SymmetricSecurityKey SigningKey;
-        private static readonly string Issuer;
-        private static readonly string Audience;
 
-        static Jwts()
+        static JwtHelper()
         {
-            var (secret, audience, issuer) = Config.UnpackJwtConfig();
+            var secret = Config.UnpackJwtConfig();
 
             var secretBytes = Encoding.UTF8.GetBytes(secret);
             SigningKey = new SymmetricSecurityKey(secretBytes);
-            Audience = audience;
-            Issuer = issuer;
         }
 
-        public static void ConfigureNeoflixJwt(JwtBearerOptions opts)
+        /// <summary>
+        /// Configure JwtBearerOptions to check only signed.
+        /// </summary>
+        /// <param name="opts"></param>
+        public static void ConfigureJwt(JwtBearerOptions opts)
         {
             opts.RequireHttpsMetadata = false;
             opts.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,
-                ValidAudience = Audience,
                 ValidateIssuer = false,
-                ValidIssuer = Issuer,
                 IssuerSigningKey = SigningKey,
                 ValidateIssuerSigningKey = true,
                 RequireSignedTokens = true,
@@ -38,6 +40,11 @@ namespace Neoflix
             };
         }
 
+        /// <summary>
+        /// Create a JWT.
+        /// </summary>
+        /// <param name="dict">Claims in a dictionary.</param>
+        /// <returns>encoded JWT</returns>
         public static string CreateToken(Dictionary<string, object> dict)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

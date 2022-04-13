@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
 
 namespace Neoflix
 {
@@ -10,8 +9,6 @@ namespace Neoflix
         private static readonly string Neo4jPassword;
 
         private static readonly string JwtSecret;
-        private static readonly string JwtIssuer;
-        private static readonly string JwtAudience;
 
         private static readonly int SaltRounds;
 
@@ -26,10 +23,7 @@ namespace Neoflix
             Neo4jUsername = neo4j["username"];
             Neo4jPassword = neo4j["password"];
 
-            var jwt = config.GetSection("Jwt");
-            JwtSecret = jwt["secret"];
-            JwtAudience = jwt["audience"];
-            JwtIssuer = jwt["issuer"];
+            JwtSecret = config.GetSection("Jwt")["secret"];
 
             SaltRounds = int.Parse(config.GetSection("Password")["rounds"]);
         }
@@ -39,9 +33,9 @@ namespace Neoflix
             return (Neo4jUri, Neo4jUsername, Neo4jPassword);
         }
 
-        public static (string Secret, string Issuer, string Audience) UnpackJwtConfig()
+        public static string UnpackJwtConfig()
         {
-            return (JwtSecret, JwtIssuer, JwtAudience);
+            return JwtSecret;
         }
 
         public static int UnpackPasswordConfig()

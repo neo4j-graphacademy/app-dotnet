@@ -12,27 +12,29 @@ namespace Neoflix.Controllers
     public class AccountController : ControllerBase
     {
         /// <summary>
+        /// Get the claims made in the JWT token.
         /// </summary>
-        /// <returns>the claims made in the JWT token</returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         [HttpGet]
         public async Task<IActionResult> GetClaimsAsync()
         {
-            // todo: fix
             var user = HttpContext.User;
 
             var claims = user.Claims.ToArray();
 
-            var result = claims.Select(x => new
-            {
-                name = x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-                    ? "sub"
-                    : x.Type,
-                value = x.Value
-            }).ToDictionary(x => x.name, x => x.value);
-
-            return Ok(result);
+            return await Task.FromResult(Ok(claims));
         }
 
+        /// <summary>
+        /// Get a list of movies that a user has added to their Favorites link by clicking the Bookmark icon on a Movie card.
+        /// </summary>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::list[]
         [HttpGet("favorites")]
         public async Task<IActionResult> GetFavoritesAsync()
@@ -50,6 +52,14 @@ namespace Neoflix.Controllers
         }
         // end::list[]
 
+        /// <summary>
+        /// Create a "HAS_FAVORITE" relationship between the current user and the movie with the id parameter.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::add[]
         [HttpPost("favorites/{id}")]
         public async Task<IActionResult> AddFavoriteAsync(string id)
@@ -65,6 +75,14 @@ namespace Neoflix.Controllers
         }
         // end::add[]
 
+        /// <summary>
+        /// Remove the "HAS_FAVORITE" relationship between the current user and the movie with the :id parameter.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::delete[]
         [HttpDelete("favorites/{id}")]
         public async Task<IActionResult> DeleteFavoriteAsync(string id)
@@ -80,6 +98,16 @@ namespace Neoflix.Controllers
         }
         // end::delete[]
 
+        /// <summary>
+        /// Create a "RATING" relationship between the current user and the movie with the id parameter.<br/>
+        /// The rating value will be posted as part of the post body.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <param name="rating">Rating to add.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::rating[]
         [HttpPost("ratings/{id}")]
         public async Task<IActionResult> AddRatingAsync(string id, [FromBody] int rating)

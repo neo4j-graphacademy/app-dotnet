@@ -8,6 +8,13 @@ namespace Neoflix.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
+        /// <summary>
+        /// Get a paginated list of movies, sorted by the "sort" query parameter,
+        /// </summary>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::list[]
         [HttpGet]
         public async Task<IActionResult> ListAsync()
@@ -24,6 +31,14 @@ namespace Neoflix.Controllers
         }
         // end::list[]
 
+        /// <summary>
+        /// Find a movie by its tmdbId and return its properties.
+        /// </summary>
+        /// <param name="id">Movie's tmdbId.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::get[]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(string id)
@@ -31,12 +46,20 @@ namespace Neoflix.Controllers
             var driver = Neo4j.Driver;
             var movieService = new MovieService(driver);
 
-            var movies = await movieService.GetByIdAsync(id);
+            var movies = await movieService.FindByIdAsync(id);
 
             return Ok(movies);
         }
         // end::get[]
 
+        /// <summary>
+        /// Get a paginated list of ratings for a movie, ordered by either the rating itself or when the review was created.
+        /// </summary>
+        /// <param name="id">Movie's tmdbId.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::ratings[]
         [HttpGet("{id}/ratings")]
         public async Task<IActionResult> GetRatingsById(string id)
@@ -53,6 +76,14 @@ namespace Neoflix.Controllers
         }
         // end::ratings[]
 
+        /// <summary>
+        /// Get a paginated list of similar movies, ordered by the similarity score in descending order.
+        /// </summary>
+        /// <param name="id">Movie's tmdbId.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.<br/>
+        /// The task result contains http result.
+        /// </returns>
         // tag::similar[]
         [HttpGet("{id}/similar")]
         public async Task<IActionResult> GetSimilarByAsync(string id)
