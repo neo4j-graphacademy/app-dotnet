@@ -51,7 +51,7 @@ namespace Neoflix
 
             var token = tokenHandler.CreateJwtSecurityToken(new SecurityTokenDescriptor
             {
-                AdditionalHeaderClaims = dict,
+                Claims = dict,
                 SigningCredentials = new SigningCredentials(SigningKey, "HS256")
             });
             return tokenHandler.WriteToken(token);

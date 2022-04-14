@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,7 +59,7 @@ namespace Neoflix.Services
             };
 
             var safeProperties = SafeProperties(exampleUser);
-            safeProperties.Add("token", JwtHelper.CreateToken(safeProperties));
+            safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
             return safeProperties;
         }
@@ -86,9 +85,9 @@ namespace Neoflix.Services
         /// The task result contains an authorized user or null when the user is not found or password is incorrect.
         /// </returns>
         // tag::authenticate[]
-        public Task<Dictionary<string, object>> AuthenticateAsync(string email, string unencryptedPassword)
+        public Task<Dictionary<string, object>> AuthenticateAsync(string email, string plainPassword)
         {
-            if (email == "graphacademy@neo4j.com" && unencryptedPassword == "letmein")
+            if (email == "graphacademy@neo4j.com" && plainPassword == "letmein")
             {
                 var exampleUser = new Dictionary<string, object>
                 {
@@ -103,7 +102,7 @@ namespace Neoflix.Services
 
                 var safeProperties = SafeProperties(exampleUser);
 
-                safeProperties.Add("token", JwtHelper.CreateToken(safeProperties));
+                safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
                 return Task.FromResult(safeProperties);
             }
@@ -116,7 +115,7 @@ namespace Neoflix.Services
         /// Sanitize properties to ensure password is not included.
         /// </summary>
         /// <param name="user">The User's properties from the database</param>
-        /// <returns></returns>
+        /// <returns>The User's properties from the database without password</returns>
         private static Dictionary<string, object> SafeProperties(Dictionary<string, object> user)
         {
             return (user["properties"] as Dictionary<string, object>)
@@ -127,11 +126,16 @@ namespace Neoflix.Services
         /// <summary>
         /// Convert user's properties and convert the "safe" properties into a set of claims that can be encoded into a JWT.
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        private (string sub, string userId, string name) GetUserClaims(dynamic user)
+        /// <param name="user">User's properties from the database.</param>
+        /// <returns>select properties in a new dictionary.</returns>
+        private Dictionary<string, object> GetUserClaims(Dictionary<string, object> user)
         {
-            return (sub: user.userId, user.userId, user.name);
+            return new Dictionary<string, object>
+            {
+                ["sub"] = user["userId"],
+                ["userId"] = user["userId"],
+                ["name"] = user["name"]
+            };
         }
 
         /// <summary>

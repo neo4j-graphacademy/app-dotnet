@@ -23,7 +23,7 @@ namespace Neoflix
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            // add static file serving for react app
+            // add static file serving for vue app
             app.UseFileServer();
             app.UseRouting();
             // add auth 

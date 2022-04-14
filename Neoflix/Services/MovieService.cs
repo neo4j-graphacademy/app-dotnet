@@ -72,7 +72,7 @@ namespace Neoflix.Services
             // TODO: Get Movies in a Genre
             // MATCH (m:Movie)-[:IN_GENRE]->(:Genre {name: $name})
 
-            return await Task.FromResult(Fixtures.Genres.Skip(skip).Take(limit).ToArray());
+            return await Task.FromResult(Fixtures.Popular.Skip(skip).Take(limit).ToArray());
         }
         // end::getByGenre[]
 
