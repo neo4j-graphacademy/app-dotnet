@@ -1,21 +1,13 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Neoflix.Services;
-using Xunit;
-using Xunit.Abstractions;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
     public class _02_MovieList : Neo4jChallengeTests
     {
-        private readonly ITestOutputHelper _testOutput;
-
-        public _02_MovieList(ITestOutputHelper output)
-        {
-            _testOutput = output;
-        }
-
-        [Fact]
+        [Test, Order(1)]
         public async Task AllAsync_should_apply_order_skip_and_limit()
         {
             var service = new MovieService(Neo4j.Driver);
@@ -23,20 +15,20 @@ namespace Neoflix.Challenges
             var firstOutput = await service.AllAsync(limit: 1);
 
             Assert.NotNull(firstOutput);
-            Assert.Single(firstOutput);
+            Assert.AreEqual(1, firstOutput.Length);
 
             var secondOutput = await service.AllAsync(limit: 1, skip: 1);
 
             Assert.NotNull(secondOutput);
-            Assert.Single(secondOutput);
+            Assert.AreEqual(1, secondOutput.Length);
 
             var firstAsDict = firstOutput.First();
             var secondAsDict = secondOutput.First();
 
-            Assert.NotEqual(firstAsDict["title"], secondAsDict["title"]);
+            Assert.AreNotEqual(firstAsDict["title"], secondAsDict["title"]);
         }
 
-        [Fact]
+        [Test, Order(2)]
         public async Task AllAsync_should_order_movies_by_rating()
         {
             var service = new MovieService(Neo4j.Driver);
@@ -44,13 +36,13 @@ namespace Neoflix.Challenges
             var output = await service.AllAsync("imdbRating", Ordering.Desc, limit: 1);
 
             Assert.NotNull(output);
-            Assert.Single(output);
+            Assert.AreEqual(1, output.Length);
 
             var firstAsDict = output.First();
 
-            _testOutput.WriteLine("Here is the answer to the quiz question on the lesson:");
-            _testOutput.WriteLine("What is the title of the highest rated movie in the recommendations dataset?");
-            _testOutput.WriteLine($"Copy and paste the following answer into the text box: {firstAsDict["title"]}\n");
+            TestContext.Out.WriteLine("Here is the answer to the quiz question on the lesson:");
+            TestContext.Out.WriteLine("What is the title of the highest rated movie in the recommendations dataset?");
+            TestContext.Out.WriteLine($"Copy and paste the following answer into the text box: {firstAsDict["title"]}\n");
         }
     }
 }

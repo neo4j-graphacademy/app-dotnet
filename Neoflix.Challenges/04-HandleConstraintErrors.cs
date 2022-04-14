@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Neo4j.Driver;
 using Neoflix.Exceptions;
 using Neoflix.Services;
-using Xunit;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
@@ -14,26 +14,26 @@ namespace Neoflix.Challenges
         public string Password { get; set; }
         public string Name { get; set; }
 
-        public override Task InitializeAsync()
+        public override Task SetupAsync()
         {
             var random = new Random();
             Email = $"{random.Next()}@neo4j.com";
             Password = random.Next().ToString();
             Name = "Graph Academy";
-            return base.InitializeAsync();
+            return base.SetupAsync();
         }
 
-        public override async Task DisposeAsync()
+        public override async Task TeardownAsync()
         {
             await using (var session = Neo4j.Driver.AsyncSession())
                 await session.WriteTransactionAsync(tx =>
                         tx.RunAsync("MATCH (u:User {email:$email}) DETACH DELETE u",
                     new {email = Email}));
 
-            await base.DisposeAsync();
+            await base.TeardownAsync();
         }
 
-        [Fact]
+        [Test, Order(1)]
         public async Task Should_find_a_unique_constraint()
         {
             await using var session = Neo4j.Driver.AsyncSession();
@@ -49,22 +49,25 @@ namespace Neoflix.Challenges
                 });
 
             Assert.NotNull(result);
-            Assert.Single(result);
+            Assert.AreEqual(1, result.Count);
         }
 
-        [Fact]
+        [Test, Order(2)]
         public async Task Should_throw_a_ValidationException_when_email_already_exists()
         {
             var service = new AuthService(Neo4j.Driver);
 
             var output = await service.RegisterAsync(Email, Password, Name);
 
-            Assert.Equal(Email, output["email"]);
-            Assert.Equal(Name, output["name"]);
-            Assert.Throws<KeyNotFoundException>(() => output["password"]);
+            Assert.AreEqual(Email, output["email"]);
+            Assert.AreEqual(Name, output["name"]);
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var value = output["password"];
+            });
             Assert.False(string.IsNullOrEmpty(output["token"].ToString()));
 
-            await Assert.ThrowsAsync<ValidationException>(async () =>
+            Assert.ThrowsAsync<ValidationException>(async () =>
                 await service.RegisterAsync(Email, Password, Name));
         }
     }

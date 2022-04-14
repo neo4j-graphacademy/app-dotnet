@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Neo4j.Driver;
 using Neoflix.Services;
-using Xunit;
-using Xunit.Abstractions;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
@@ -11,14 +10,7 @@ namespace Neoflix.Challenges
         private const string TomHanks = "31";
         private const string Coppola = "1776";
 
-        private readonly ITestOutputHelper _testOutput;
-
-        public _11_MovieLists(ITestOutputHelper testOutput)
-        {
-            _testOutput = testOutput;
-        }
-
-        [Fact]
+        [Test, Order(1)]
         public async Task GetByGenreAsync_should_return_paginated_list_of_movies_by_genre()
         {
             var service = new MovieService(Neo4j.Driver);
@@ -30,25 +22,25 @@ namespace Neoflix.Challenges
                 Ordering.Asc, limit: limit);
 
             Assert.NotNull(output);
-            Assert.Equal(limit, output.Length);
+            Assert.AreEqual(limit, output.Length);
 
             var secondOutput = await service.GetByGenreAsync(genre, "title",
                 Ordering.Asc, limit: limit, skip: limit);
 
             Assert.NotNull(secondOutput);
-            Assert.Equal(limit, secondOutput.Length);
+            Assert.AreEqual(limit, secondOutput.Length);
 
-            Assert.NotEqual(output[0]["title"].As<string>(), 
+            Assert.AreNotEqual(output[0]["title"].As<string>(), 
                 secondOutput[0]["title"].As<string>());
 
             var reordered = await service.GetByGenreAsync(genre, "released",
                 Ordering.Asc, limit, limit);
 
-            Assert.NotEqual(reordered[0]["title"].As<string>(),
+            Assert.AreNotEqual(reordered[0]["title"].As<string>(),
                 output[0]["title"].As<string>());
         }
 
-        [Fact]
+        [Test, Order(2)]
         public async Task GetForActorAsync_should_return_paginated_list()
         {
             var service = new MovieService(Neo4j.Driver);
@@ -59,25 +51,25 @@ namespace Neoflix.Challenges
                 Ordering.Asc, limit, 0);
 
             Assert.NotNull(output);
-            Assert.Equal(limit, output.Length);
+            Assert.AreEqual(limit, output.Length);
 
             var secondOutput = await service.GetForActorAsync(TomHanks, "title",
                 Ordering.Asc, limit, limit);
 
             Assert.NotNull(output);
-            Assert.Equal(limit, secondOutput.Length);
+            Assert.AreEqual(limit, secondOutput.Length);
 
-            Assert.NotEqual(output[0]["title"].As<string>(),
+            Assert.AreNotEqual(output[0]["title"].As<string>(),
                 secondOutput[0]["title"].As<string>());
 
             var reordered = await service.GetForActorAsync(TomHanks, "released",
                 Ordering.Asc, limit, 0);
 
-            Assert.NotEqual(output[0]["title"].As<string>(),
+            Assert.AreNotEqual(output[0]["title"].As<string>(),
                 reordered[0]["title"].As<string>());
         }
 
-        [Fact]
+        [Test, Order(3)]
         public async Task GetForDirectorAsync_should_return_paginated_list()
         {
             var service = new MovieService(Neo4j.Driver);
@@ -88,36 +80,36 @@ namespace Neoflix.Challenges
                 Ordering.Asc, limit, 0);
 
             Assert.NotNull(output);
-            Assert.Equal(limit, output.Length);
+            Assert.AreEqual(limit, output.Length);
 
             var secondOutput = await service.GetForDirectorAsync(TomHanks, "title",
                 Ordering.Asc, limit, limit);
 
             Assert.NotNull(output);
-            Assert.Equal(limit, secondOutput.Length);
+            Assert.AreEqual(limit, secondOutput.Length);
 
-            Assert.NotEqual(output[0]["title"].As<string>(),
+            Assert.AreNotEqual(output[0]["title"].As<string>(),
                 secondOutput[0]["title"].As<string>());
 
             var reordered = await service.GetForDirectorAsync(TomHanks, "released",
                 Ordering.Asc, limit, 0);
 
-            Assert.NotEqual(output[0]["title"].As<string>(),
+            Assert.AreNotEqual(output[0]["title"].As<string>(),
                 reordered[0]["title"].As<string>());
         }
 
-        [Fact]
+        [Test, Order(4)]
         public async Task GetForDirectorAsync_should_find_films_by_Francis_Ford_Coppola()
         {
             var service = new MovieService(Neo4j.Driver);
 
             var output = await service.GetForDirectorAsync(Coppola, "imdbRating",
                 Ordering.Desc, 30);
-            Assert.Equal(16, output.Length);
+            Assert.AreEqual(16, output.Length);
 
-            _testOutput.WriteLine("Here is the answer to the quiz question on the lesson:");
-            _testOutput.WriteLine("How many films has Francis Ford Coppola directed?");
-            _testOutput.WriteLine($"Copy and paste the following answer into the text box: {output.Length}");
+            TestContext.Out.WriteLine("Here is the answer to the quiz question on the lesson:");
+            TestContext.Out.WriteLine("How many films has Francis Ford Coppola directed?");
+            TestContext.Out.WriteLine($"Copy and paste the following answer into the text box: {output.Length}");
         }
     }
 }

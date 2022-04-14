@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Neo4j.Driver;
 using Neoflix.Exceptions;
 using Neoflix.Services;
-using Xunit;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
@@ -13,9 +14,9 @@ namespace Neoflix.Challenges
         private const string UserId = "9f965bf6-7e32-4afb-893f-756f502b2c2a";
         private const string Email = "graphacademy.favorite@neo4j.com";
 
-        public override async Task InitializeAsync()
+        public override async Task SetupAsync()
         {
-            await base.InitializeAsync();
+            await base.SetupAsync();
             await using var session = Neo4j.Driver.AsyncSession();
             await session.WriteTransactionAsync(tx =>
                 tx.RunAsync(@"
@@ -24,51 +25,51 @@ namespace Neoflix.Challenges
                     new {userId = UserId, email = Email}));
         }
 
-        [Fact]
-        public async Task AddAsync_should_throw_if_the_user_or_movie_do_not_exist()
+        [Test, Order(1)]
+        public void AddAsync_should_throw_if_the_user_or_movie_do_not_exist()
         {
             var service = new FavoriteService(Neo4j.Driver);
 
-            await Assert.ThrowsAsync<NotFoundException>(async () => await service.AddAsync("unknown", "x999"));
+            Assert.ThrowsAsync<NotFoundException>(async () => await service.AddAsync("unknown", "x999"));
         }
 
-        [Fact]
+        [Test, Order(2)]
         public async Task AddAsync_should_save_movie_to_users_favorites()
         {
             var service = new FavoriteService(Neo4j.Driver);
 
             var output = await service.AddAsync(UserId, ToyStory);
 
-            Assert.Equal(ToyStory, output["tmdbId"].As<string>());
+            Assert.AreEqual(ToyStory, output["tmdbId"].As<string>());
             Assert.True(output["favorite"].As<bool>());
 
             var all = await service.AllAsync(UserId);
 
-            Assert.Contains(all, x => x["tmdbId"].As<string>() == ToyStory);
+            Assert.True(all.Any(x => x["tmdbId"].As<string>() == ToyStory));
         }
 
-        [Fact]
+        [Test, Order(3)]
         public async Task AddAsync_should_remove_movie_to_users_favorites()
         {
             var service = new FavoriteService(Neo4j.Driver);
 
             var output = await service.AddAsync(UserId, ToyStory);
 
-            Assert.Equal(Goodfellas, output["tmdbId"].As<string>());
+            Assert.AreEqual(Goodfellas, output["tmdbId"].As<string>());
             Assert.True(output["favorite"].As<bool>());
 
             var included = await service.AllAsync(UserId);
-
-            Assert.Contains(included, x => x["tmdbId"].As<string>() == Goodfellas);
-
+           
+            Assert.True(included.Any(x => x["tmdbId"].As<string>() == Goodfellas));
+            
             var removed = await service.RemoveAsync(UserId, Goodfellas);
 
-            Assert.Equal(Goodfellas, removed["tmdbId"].As<string>());
+            Assert.AreEqual(Goodfellas, removed["tmdbId"].As<string>());
             Assert.False(removed["favorite"].As<bool>());
 
             var excluded = await service.AllAsync(UserId);
 
-            Assert.DoesNotContain(excluded, x => x["tmdbId"].As<string>() == Goodfellas);
+            Assert.False(excluded.Any(x => x["tmdbId"].As<string>() == Goodfellas));
         }
     }
 }

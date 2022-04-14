@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Neoflix.Services;
-using Xunit;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
@@ -13,15 +13,15 @@ namespace Neoflix.Challenges
         private const string Name = "Authenticated User";
         private bool[] successes = {false, false, false};
 
-        public override async Task InitializeAsync()
+        public override async Task SetupAsync()
         {
-            await base.InitializeAsync();
+            await base.SetupAsync();
             await using var session = Neo4j.Driver.AsyncSession();
             await session.WriteTransactionAsync(tx =>
                 tx.RunAsync("MATCH (u:User {email: $email}) DETACH DELETE u", new {email = Email}));
         }
 
-        public override async Task DisposeAsync()
+        public override async Task TeardownAsync()
         {
             if (successes.All(x => x))
             {
@@ -31,10 +31,10 @@ namespace Neoflix.Challenges
                     SET u.authenticatedAt = datetime()", new { email = Email }));
             }
 
-            await base.DisposeAsync();
+            await base.TeardownAsync();
         }
 
-        [Fact]
+        [Test, Order(1)]
         public async Task AuthenticateAsync_should_authenticate__recently_created_user()
         {
             var service = new AuthService(Neo4j.Driver);
@@ -43,14 +43,17 @@ namespace Neoflix.Challenges
 
             var output = await service.AuthenticateAsync(Email, Password);
 
-            Assert.Equal(Email, output["email"]);
-            Assert.Equal(Name, output["name"]);
-            Assert.Throws<KeyNotFoundException>(() => output["password"]);
+            Assert.AreEqual(Email, output["email"]);
+            Assert.AreEqual(Name, output["name"]);
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var value = output["password"];
+            });
             Assert.False(string.IsNullOrEmpty(output["token"].ToString()));
             successes[0] = true;
         }
 
-        [Fact]
+        [Test, Order(2)]
         public async Task AuthenticateAsync_should_return_false_on_incorrect_password()
         {
             var service = new AuthService(Neo4j.Driver);
@@ -61,7 +64,7 @@ namespace Neoflix.Challenges
             successes[1] = true;
         }
 
-        [Fact]
+        [Test, Order(3)]
         public async Task AuthenticateAsync_should_return_false_on_incorrect_email()
         {
             var service = new AuthService(Neo4j.Driver);

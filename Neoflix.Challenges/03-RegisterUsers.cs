@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Neo4j.Driver;
 using Neoflix.Services;
-using Xunit;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
@@ -12,9 +12,9 @@ namespace Neoflix.Challenges
         private const string Password = "letmein";
         private const string Name = "Graph Academy";
 
-        public override async Task InitializeAsync()
+        public override async Task SetupAsync()
         {
-            await base.InitializeAsync();
+            await base.SetupAsync();
 
             await using var session = Neo4j.Driver.AsyncSession();
             await session.WriteTransactionAsync(tx =>
@@ -22,16 +22,19 @@ namespace Neoflix.Challenges
                     new {email = Email}));
         }
 
-        [Fact]
+        [Test]
         public async Task RegisterAsync_should_register_a_user()
         {
             var service = new AuthService(Neo4j.Driver);
 
             var output = await service.RegisterAsync(Email, Password, Name);
 
-            Assert.Equal(Email, output["email"]);
-            Assert.Equal(Name, output["name"]);
-            Assert.Throws<KeyNotFoundException>(() => output["password"]);
+            Assert.AreEqual(Email, output["email"]);
+            Assert.AreEqual(Name, output["name"]);
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var value = output["password"];
+            });
             Assert.NotNull(output["token"]);
 
             await using var session = Neo4j.Driver.AsyncSession();
@@ -42,12 +45,12 @@ namespace Neoflix.Challenges
                 return await cursor.ToListAsync();
             });
 
-            Assert.Single(result);
+            Assert.AreEqual(1, result.Count);
             var user = result[0].Values["u"].As<INode>();
 
-            Assert.Equal(Email, user.Properties["email"].As<string>());
-            Assert.Equal(Name, user.Properties["name"].As<string>());
-            Assert.NotEqual(Password, user.Properties["password"].As<string>());
+            Assert.AreEqual(Email, user.Properties["email"].As<string>());
+            Assert.AreEqual(Name, user.Properties["name"].As<string>());
+            Assert.AreNotEqual(Password, user.Properties["password"].As<string>());
         }
     }
 }

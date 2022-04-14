@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neoflix", "Neoflix\Neoflix.csproj", "{3026E7DD-EFB6-43F5-A78E-2A269F83D8C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neoflix.Challenges", "Neoflix.Challenges\Neoflix.Challenges.csproj", "{9894251E-8FC9-418E-B1CB-B491122BF2B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neoflix.Challenges", "Neoflix.Challenges\Neoflix.Challenges.csproj", "{B4DAB3AC-906A-4CC5-ABBC-68A1C70C0B88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{3026E7DD-EFB6-43F5-A78E-2A269F83D8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3026E7DD-EFB6-43F5-A78E-2A269F83D8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3026E7DD-EFB6-43F5-A78E-2A269F83D8C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9894251E-8FC9-418E-B1CB-B491122BF2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9894251E-8FC9-418E-B1CB-B491122BF2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9894251E-8FC9-418E-B1CB-B491122BF2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9894251E-8FC9-418E-B1CB-B491122BF2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4DAB3AC-906A-4CC5-ABBC-68A1C70C0B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4DAB3AC-906A-4CC5-ABBC-68A1C70C0B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4DAB3AC-906A-4CC5-ABBC-68A1C70C0B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4DAB3AC-906A-4CC5-ABBC-68A1C70C0B88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

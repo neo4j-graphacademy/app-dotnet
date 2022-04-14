@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Neo4j.Driver;
 using Neoflix.Services;
-using Xunit;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
@@ -13,9 +12,9 @@ namespace Neoflix.Challenges
         private const string Email = "graphacademy.reviewer@neo4j.com";
         private const int Rating = 5;
 
-        public override async Task InitializeAsync()
+        public override async Task SetupAsync()
         {
-            await base.InitializeAsync();
+            await base.SetupAsync();
 
             await using var session = Neo4j.Driver.AsyncSession();
             await session.WriteTransactionAsync(tx =>
@@ -25,15 +24,15 @@ namespace Neoflix.Challenges
                     new {userId = UserId, email = Email}));
         }
 
-        [Fact]
+        [Test]
         public async Task AddAsync_should_store_rating_as_integer()
         {
             var service = new RatingService(Neo4j.Driver);
 
             var output = await service.AddAsync(UserId, MovieId, Rating);
 
-            Assert.Equal(MovieId, output["tmdbId"]);
-            Assert.Equal(Rating, output["rating"].As<int>());
+            Assert.AreEqual(MovieId, output["tmdbId"]);
+            Assert.AreEqual(Rating, output["rating"].As<int>());
         }
     }
 }

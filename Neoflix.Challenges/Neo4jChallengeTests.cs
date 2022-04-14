@@ -1,17 +1,21 @@
 using System.Threading.Tasks;
-using Xunit;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
-    public abstract class Neo4jChallengeTests : IAsyncLifetime
+    [TestFixture]
+    [NonParallelizable]
+    public abstract class Neo4jChallengeTests
     {
-        public virtual async Task InitializeAsync()
+        [OneTimeSetUp]
+        public virtual async Task SetupAsync()
         {
             var (uri, user, password) = Config.UnpackNeo4jConfig();
             await Neo4j.InitDriverAsync(uri, user, password);
         }
 
-        public virtual async Task DisposeAsync()
+        [OneTimeTearDown]
+        public virtual async Task TeardownAsync()
         {
             await Neo4j.CloseDriver();
         }

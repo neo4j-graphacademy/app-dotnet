@@ -2,21 +2,13 @@
 using Neo4j.Driver;
 using Neoflix.Services;
 using Newtonsoft.Json;
-using Xunit;
-using Xunit.Abstractions;
+using NUnit.Framework;
 
 namespace Neoflix.Challenges
 {
     public class _14_PersonList : Neo4jChallengeTests
     {
-        private readonly ITestOutputHelper _testOutput;
-
-        public _14_PersonList(ITestOutputHelper testOutput)
-        {
-            _testOutput = testOutput;
-        }
-
-        [Fact]
+        [Test, Order(1)]
         public async Task AllAsync_should_retrieve_paginated_list_from_database()
         {
             var service = new PeopleService(Neo4j.Driver);
@@ -26,17 +18,17 @@ namespace Neoflix.Challenges
             var output = await service.AllAsync(null, "name", Ordering.Asc, limit);
 
             Assert.NotNull(output);
-            Assert.Equal(limit, output.Length);
+            Assert.AreEqual(limit, output.Length);
 
             var paginated = await service.AllAsync(null, "name", Ordering.Asc, limit, limit);
 
             Assert.NotNull(paginated);
-            Assert.Equal(limit, paginated.Length);
+            Assert.AreEqual(limit, paginated.Length);
 
-            Assert.NotEqual(JsonConvert.SerializeObject(output), JsonConvert.SerializeObject(paginated));
+            Assert.AreNotEqual(JsonConvert.SerializeObject(output), JsonConvert.SerializeObject(paginated));
         }
 
-        [Fact]
+        [Test, Order(2)]
         public async Task AllAsync_should_apply_filter_order_pagination_to_query()
         {
             var service = new PeopleService(Neo4j.Driver);
@@ -47,15 +39,15 @@ namespace Neoflix.Challenges
             var last = await service.AllAsync(query, "name", Ordering.Desc, 1);
 
             Assert.NotNull(first);
-            Assert.Single(first);
+            Assert.AreEqual(1, first.Length);
 
             Assert.NotNull(last);
-            Assert.Single(last);
+            Assert.AreEqual(1, last.Length);
 
-            Assert.NotEqual(JsonConvert.SerializeObject(first), JsonConvert.SerializeObject(last));
+            Assert.AreNotEqual(JsonConvert.SerializeObject(first), JsonConvert.SerializeObject(last));
         }
 
-        [Fact]
+        [Test, Order(3)]
         public async Task AllAsync_should_apply_filter_order_pagination()
         {
             var service = new PeopleService(Neo4j.Driver);
@@ -63,9 +55,9 @@ namespace Neoflix.Challenges
             var first = await service.AllAsync(null, "name", Ordering.Asc, 1);
             var result = first[0]["name"].As<string>();
 
-            _testOutput.WriteLine("Here is the answer to the quiz question on the lesson:");
-            _testOutput.WriteLine("What is the name of the first person in the database in alphabetical order?");
-            _testOutput.WriteLine($"Copy and paste the following answer into the text box: {result}");
+            TestContext.Out.WriteLine("Here is the answer to the quiz question on the lesson:");
+            TestContext.Out.WriteLine("What is the name of the first person in the database in alphabetical order?");
+            TestContext.Out.WriteLine($"Copy and paste the following answer into the text box: {result}");
         }
     }
 }
