@@ -53,7 +53,7 @@ namespace Neoflix.Challenges
         {
             var service = new FavoriteService(Neo4j.Driver);
 
-            var output = await service.AddAsync(UserId, ToyStory);
+            var output = await service.AddAsync(UserId, Goodfellas);
 
             Assert.AreEqual(Goodfellas, output["tmdbId"].As<string>());
             Assert.True(output["favorite"].As<bool>());

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Neo4j.Driver;
+using Neoflix.Exceptions;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Neoflix.Services
@@ -43,7 +43,7 @@ namespace Neoflix.Services
             // tag::constraintError[]
             // TODO: Handle Unique constraints in the database
             if (email != "graphacademy@neo4j.com")
-                throw new ValidationException($"An account already exists with the email address {email}");
+                throw new ValidationException($"An account already exists with the email address", email);
             // end::constraintError[]
             
             // TODO: Save user
@@ -58,7 +58,7 @@ namespace Neoflix.Services
                 }
             };
 
-            var safeProperties = SafeProperties(exampleUser);
+            var safeProperties = SafeProperties(exampleUser["properties"] as Dictionary<string, object>);
             safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
             return safeProperties;
@@ -100,7 +100,7 @@ namespace Neoflix.Services
                     }
                 };
 
-                var safeProperties = SafeProperties(exampleUser);
+                var safeProperties = SafeProperties(exampleUser["properties"] as Dictionary<string, object>);
 
                 safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
@@ -118,7 +118,7 @@ namespace Neoflix.Services
         /// <returns>The User's properties from the database without password</returns>
         private static Dictionary<string, object> SafeProperties(Dictionary<string, object> user)
         {
-            return (user["properties"] as Dictionary<string, object>)
+            return user
                 .Where(x => x.Key != "password")
                 .ToDictionary(x => x.Key, x => x.Value);
         }

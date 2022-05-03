@@ -39,7 +39,7 @@ namespace Neoflix.Challenges
             var addCheck = await favoriteService.AllAsync(UserId, "imdbRating", limit: 999);
             Assert.True(addCheck.Any(x => x["tmdbId"].As<string>() == first["tmdbId"].As<string>()));
 
-            var checks = await movieService.AllAsync("imdbRating", Ordering.Desc, limit: 2);
+            var checks = await movieService.AllAsync("imdbRating", Ordering.Desc, limit: 2, userId: UserId);
             var checkFirst = checks[0];
             var checkSecond = checks[1];
 

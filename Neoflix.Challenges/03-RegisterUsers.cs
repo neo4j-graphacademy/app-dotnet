@@ -40,7 +40,7 @@ namespace Neoflix.Challenges
             await using var session = Neo4j.Driver.AsyncSession();
             var result = await session.ReadTransactionAsync(async tx =>
             {
-                var cursor = await tx.RunAsync("MATCH (u:User {email:$email}) DETACH DELETE u",
+                var cursor = await tx.RunAsync("MATCH (u:User {email:$email}) RETURN u",
                     new {email = Email});
                 return await cursor.ToListAsync();
             });
