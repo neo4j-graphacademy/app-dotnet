@@ -40,7 +40,7 @@ namespace Neoflix.Services
         {
             var rounds = Config.UnpackPasswordConfig();
             var encrypted = BCryptNet.HashPassword(plainPassword, rounds);
-            
+
             // tag::catch[]
             try
             {
@@ -132,14 +132,6 @@ namespace Neoflix.Services
             if (!BCryptNet.Verify(plainPassword, user["password"].As<string>()))
                 return null;
             // end::password[]
-
-            // tag::return[]
-            var safeProperties = SafeProperties(user);
-            safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
-            return safeProperties;
-            // end::return[]
-                return await Task.FromResult(safeProperties);
-            }
 
             // tag::return[]
             var safeProperties = SafeProperties(user);
