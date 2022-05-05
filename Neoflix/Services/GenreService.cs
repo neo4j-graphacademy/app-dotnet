@@ -41,11 +41,33 @@ namespace Neoflix.Services
         // tag::all[]
         public async Task<Dictionary<string, object>[]> AllAsync()
         {
-            // TODO: Open a new session
-            // TODO: Get a list of Genres from the database
-            // TODO: Close the session
+            await using var session = _driver.AsyncSession();
+            return await session.ExecuteReadAsync(async tx =>
+            {
+                var query = @"
+                    MATCH (g:Genre)
+                    WHERE g.name <> '(no genres listed)'
+                    CALL {
+                        WITH g
+                        MATCH (g)<-[:IN_GENRE]-(m:Movie)
+                        WHERE m.imdbRating IS NOT NULL
+                        AND m.poster IS NOT NULL
+                        RETURN m.poster AS poster
+                        ORDER BY m.imdbRating DESC LIMIT 1
+                    }
+                    RETURN g {
+                        .*,
+                        movies: count { (g)<-[:IN_GENRE]-(:Movie) },
+                        poster: poster
+                    } as genre
+                    ORDER BY g.name ASC";
+                var cursor = await tx.RunAsync(query);
+                var records = await cursor.ToListAsync();
 
-            return await Task.FromResult(Fixtures.Genres.ToArray());
+                return records
+                    .Select(x => x["genre"].As<Dictionary<string, object>>())
+                    .ToArray();
+            });
         }
         // end::all[]
 
