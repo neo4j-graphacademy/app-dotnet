@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Neo4j.Driver;
@@ -36,8 +37,28 @@ namespace Neoflix.Services
         // tag::all[]
         public async Task<Dictionary<string, object>[]> AllAsync(string? query, string sort = "name", Ordering order = Ordering.Asc, int limit = 6, int skip = 0)
         {
-            // TODO: Get a list of people from the database
-            return await Task.FromResult(Fixtures.People.Skip(skip).Take(limit).ToArray());
+            await using var session = _driver.AsyncSession();
+
+            return await session.ExecuteReadAsync(async tx =>
+            {
+                var personFilter = query != null
+                    ? "WHERE p.name CONTAINS $query"
+                    : string.Empty;
+                var cypher = $@"
+                    MATCH (p:Person)
+                    {personFilter}
+                    RETURN p {{ .* }} AS person
+                    ORDER BY p.`{sort}` {order.ToString("G").ToUpper()}
+                    SKIP $skip
+                    LIMIT $limit";
+
+                var cursor = await tx.RunAsync(cypher, new {query, skip, limit});
+                var records = await cursor.ToListAsync();
+
+                return records
+                    .Select(x => x["person"].As<Dictionary<string, object>>())
+                    .ToArray();
+            });
         }
         // end::all[]
 
