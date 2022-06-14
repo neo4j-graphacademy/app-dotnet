@@ -21,7 +21,17 @@
       "launchBrowser": true,
       "applicationUrl": "http://localhost:3000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Watch": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "dotnetRunMessages": "true",
+      "launchUrl": "http://localhost:3000",
+      "applicationUrl": "http://localhost:3000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
