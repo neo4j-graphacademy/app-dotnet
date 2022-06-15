@@ -21,11 +21,12 @@ namespace Neoflix.Controllers
         {
             var (_, sort, order, limit, skip) = HttpRequestUtils
                 .GetPagination(Request.Query, SortType.Movies);
+            var userId = HttpRequestUtils.GetUserId(Request);
 
             var driver = Neo4j.Driver;
             var movieService = new MovieService(driver);
 
-            var movies = await movieService.AllAsync(sort, order, limit, skip);
+            var movies = await movieService.AllAsync(sort, order, limit, skip, userId);
 
             return Ok(movies);
         }
@@ -45,8 +46,9 @@ namespace Neoflix.Controllers
         {
             var driver = Neo4j.Driver;
             var movieService = new MovieService(driver);
+            var userId = HttpRequestUtils.GetUserId(Request);
 
-            var movies = await movieService.FindByIdAsync(id);
+            var movies = await movieService.FindByIdAsync(id, userId);
 
             return Ok(movies);
         }
