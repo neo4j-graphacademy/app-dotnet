@@ -150,7 +150,7 @@ namespace Neoflix.Services
 
             return await Task.FromResult(Fixtures.Goodfellas);
         }
-        // end:findById[]
+        // end::findById[]
 
         /// <summary>
         /// Get a paginated list of similar movies to the Movie with the <see cref="id"/> supplied.<br/>
