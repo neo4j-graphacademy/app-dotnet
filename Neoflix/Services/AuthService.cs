@@ -40,7 +40,7 @@ namespace Neoflix.Services
         {
             var rounds = Config.UnpackPasswordConfig();
             var encrypted = BCryptNet.HashPassword(plainPassword, rounds);
-            
+
             // tag::catch[]
             try
             {
