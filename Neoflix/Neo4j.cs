@@ -14,7 +14,7 @@ namespace Neoflix
         // tag::driver[]
         private static IDriver _driver = null;
         // end::driver[]
-        
+
         // tag::getDriver[]
         public static IDriver Driver => _driver;
         // end::getDriver[]
