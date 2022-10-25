@@ -67,6 +67,7 @@ namespace Neoflix.Services
                     // end::extract[]
                 });
 
+<<<<<<< HEAD
                 var safeProperties = SafeProperties(user);
                 safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
@@ -79,6 +80,9 @@ namespace Neoflix.Services
                 throw new ValidationException(exception.Message, email);
             }
             // end::catch[]
+=======
+            return await Task.FromResult(safeProperties);
+>>>>>>> a4931a1 (Update to 5.1 driver and fix obsolete method calls)
         }
         // end::register[]
 
