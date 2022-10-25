@@ -66,7 +66,7 @@ namespace Neoflix.Services
                     return record["u"].As<Dictionary<string, object>>();
                     // end::extract[]
                 });
-               
+
                 var safeProperties = SafeProperties(user);
                 safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
