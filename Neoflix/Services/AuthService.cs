@@ -61,7 +61,7 @@ namespace Neoflix.Services
             var safeProperties = SafeProperties(exampleUser["properties"] as Dictionary<string, object>);
             safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
-            return safeProperties;
+            return await Task.FromResult(safeProperties);
         }
         // end::register[]
 
@@ -85,7 +85,7 @@ namespace Neoflix.Services
         /// The task result contains an authorized user or null when the user is not found or password is incorrect.
         /// </returns>
         // tag::authenticate[]
-        public Task<Dictionary<string, object>> AuthenticateAsync(string email, string plainPassword)
+        public async Task<Dictionary<string, object>> AuthenticateAsync(string email, string plainPassword)
         {
             if (email == "graphacademy@neo4j.com" && plainPassword == "letmein")
             {
@@ -104,10 +104,10 @@ namespace Neoflix.Services
 
                 safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
-                return Task.FromResult(safeProperties);
+                return await Task.FromResult(safeProperties);
             }
 
-            return Task.FromResult<Dictionary<string,object>>(null);
+            return await Task.FromResult<Dictionary<string,object>>(null);
         }
         // end::authenticate[]
 

@@ -18,7 +18,7 @@ namespace Neoflix.Challenges
         {
             await base.SetupAsync();
             await using var session = Neo4j.Driver.AsyncSession();
-            await session.WriteTransactionAsync(tx =>
+            await session.ExecuteWriteAsync(tx =>
                 tx.RunAsync(@"
                     MERGE (u:User {userId: $userId})
                     SET u.email = $email",

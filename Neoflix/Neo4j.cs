@@ -27,10 +27,10 @@ namespace Neoflix
         /// <param name="password">Password for the user.</param>
         /// <returns>A task that represents the asynchronous initialization operation.</returns>
         // tag::initDriver[]
-        public static Task InitDriverAsync(string uri, string username, string password)
+        public static async Task InitDriverAsync(string uri, string username, string password)
         {
             // TODO: Create an instance of the driver here
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
         // end::initDriver[]
 
@@ -41,7 +41,7 @@ namespace Neoflix
         // tag::closeDriver[]
         public static Task CloseDriver()
         {
-            return _driver != null ? _driver.CloseAsync() : Task.CompletedTask;
+            return _driver?.CloseAsync() ?? Task.CompletedTask;
         }
         // end::closeDriver[]
     }

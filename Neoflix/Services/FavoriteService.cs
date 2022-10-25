@@ -57,7 +57,7 @@ namespace Neoflix.Services
         /// The task result contains The updated movie record with `favorite` set to true.
         /// </returns>
         // tag::add[]
-        public Task<Dictionary<string, object>> AddAsync(string userId, string tmdbId)
+        public async Task<Dictionary<string, object>> AddAsync(string userId, string tmdbId)
         {
             // TODO: Open a new Session
             // TODO: Create HAS_FAVORITE relationship within a Write Transaction
@@ -67,7 +67,7 @@ namespace Neoflix.Services
                 .Concat(new[] {new KeyValuePair<string, object>("favorite", true)})
                 .ToDictionary(x => x.Key, x => x.Value);
 
-            return Task.FromResult(data);
+            return await Task.FromResult(data);
         }
         // end::add[]
 
@@ -82,7 +82,7 @@ namespace Neoflix.Services
         /// The task result contains The updated movie record with `favorite` set to false.
         /// </returns>
         // tag::remove[]
-        public Task<Dictionary<string, object>> RemoveAsync(string userId, string tmdbId)
+        public async Task<Dictionary<string, object>> RemoveAsync(string userId, string tmdbId)
         {
             // TODO: Open a new Session
             // TODO: Delete the HAS_FAVORITE relationship within a Write Transaction
@@ -93,7 +93,7 @@ namespace Neoflix.Services
                 .Concat(new[] {new KeyValuePair<string, object>("favorite", true)})
                 .ToDictionary(x => x.Key, x => x.Value);
 
-            return Task.FromResult(data);
+            return await Task.FromResult(data);
         }
         // end::remove[]
     }
