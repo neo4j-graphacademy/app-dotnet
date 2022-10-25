@@ -83,7 +83,7 @@ namespace Neoflix.Services
                 var query = @"
                     MATCH (u:User {userId: $userId})
                     MATCH (m:Movie {tmdbId: $tmdbId})
-                    
+
                     MERGE (u)-[r:HAS_FAVORITE]->(m)
                     ON CREATE SET u.createdAt = datetime()
 
