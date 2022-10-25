@@ -39,13 +39,13 @@ namespace Neoflix.Services
         /// The task result contains a list of records.
         /// </returns>
         // tag::all[]
-        public Task<Dictionary<string, object>[]> AllAsync()
+        public async Task<Dictionary<string, object>[]> AllAsync()
         {
             // TODO: Open a new session
             // TODO: Get a list of Genres from the database
             // TODO: Close the session
 
-            return Task.FromResult(Fixtures.Genres.ToArray());
+            return await Task.FromResult(Fixtures.Genres.ToArray());
         }
         // end::all[]
 
@@ -59,18 +59,17 @@ namespace Neoflix.Services
         /// The task result contains a record.
         /// </returns>
         // tag::find[]
-        public Task<Dictionary<string, object>> FindGenreAsync(string name)
+        public async Task<Dictionary<string, object>> FindGenreAsync(string name)
         {
             // TODO: Open a new session
             // TODO: Get Genre information from the database
             // TODO: return null if the genre is not found
             // TODO: Close the session
 
-            return Task.FromResult(
+            return await Task.FromResult(
                 Fixtures
                     .Genres
-                    .OfType<Dictionary<string, object>>()
-                    .First(x => x["name"] == name));
+                    .First(x => (string)x["name"] == name));
         }
         // end::find[]
     }
