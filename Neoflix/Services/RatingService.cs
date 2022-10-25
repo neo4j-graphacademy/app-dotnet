@@ -64,11 +64,11 @@ namespace Neoflix.Services
                 var cursor = await tx.RunAsync(@"
                     MATCH (u:User {userId: $userId})
                     MATCH (m:Movie {tmdbId: $tmdbId})
-                    
+
                     MERGE (u)-[r:RATED]->(m)
                     SET r.rating = $rating,
                         r.timestamp = timestamp()
-                    
+
                     RETURN m {
                         .*,
                         rating: r.rating
@@ -88,7 +88,7 @@ namespace Neoflix.Services
             // end::throw[]
 
             // tag::addreturn[]
-            return updatedMovie;    
+            return updatedMovie;
             // end::addreturn[]
         }
         // end::add[]
