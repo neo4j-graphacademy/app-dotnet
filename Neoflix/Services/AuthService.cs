@@ -128,7 +128,6 @@ namespace Neoflix.Services
             if (user == null)
                 return null;
 
-<<<<<<< HEAD
             // tag::password[]
             if (!BCryptNet.Verify(plainPassword, user["password"].As<string>()))
                 return null;
@@ -139,12 +138,6 @@ namespace Neoflix.Services
             safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
             return safeProperties;
             // end::return[]
-=======
-                return await Task.FromResult(safeProperties);
-            }
-
-            return await Task.FromResult<Dictionary<string,object>>(null);
->>>>>>> a4931a1 (Update to 5.1 driver and fix obsolete method calls)
         }
         // end::authenticate[]
 
