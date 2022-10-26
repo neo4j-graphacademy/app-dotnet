@@ -40,28 +40,36 @@ namespace Neoflix.Services
         {
             var rounds = Config.UnpackPasswordConfig();
             var encrypted = BCryptNet.HashPassword(plainPassword, rounds);
-            // tag::constraintError[]
-            // TODO: Handle Unique constraints in the database
-            if (email != "graphacademy@neo4j.com")
-                throw new ValidationException($"An account already exists with the email address", email);
-            // end::constraintError[]
-            
-            // TODO: Save user
-            var exampleUser = new Dictionary<string, object>
-            {
-                ["identity"] = 1,
-                ["properties"] = new Dictionary<string, object>
-                {
-                    ["userId"] = 1,
-                    ["email"] = "graphacademy@neo4j.com",
-                    ["name"] = "Graph Academy"
-                }
-            };
 
-            var safeProperties = SafeProperties(exampleUser["properties"] as Dictionary<string, object>);
+            await using var session = _driver.AsyncSession();
+
+            var user = await session.ExecuteWriteAsync(async tx =>
+            {
+                // tag::create[]
+                var query = @"
+                    CREATE (u:User {
+                        userId: randomUuid(),
+                        email: $email,
+                        password: $encrypted,
+                        name: $name
+                    })
+                    RETURN u { .userId, .name, .email } as u";
+                var cursor = await tx.RunAsync(query, new {email, encrypted, name});
+                // end::create[]
+
+                // tag::extract[]
+                var record = await cursor.SingleAsync();
+                // Extract safe properties from the user node (`u`) in the first row
+                return record["u"].As<Dictionary<string, object>>();
+                // end::extract[]
+            });
+
+            var safeProperties = SafeProperties(user);
             safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
-            return await Task.FromResult(safeProperties);
+            // tag::return-register[]
+            return safeProperties;
+            // end::return-register[]
         }
         // end::register[]
 
