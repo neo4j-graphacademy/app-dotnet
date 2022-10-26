@@ -141,7 +141,11 @@ namespace Neoflix.Services
                 return await Task.FromResult(safeProperties);
             }
 
-            return await Task.FromResult<Dictionary<string,object>>(null);
+            // tag::return[]
+            var safeProperties = SafeProperties(user);
+            safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
+            return safeProperties;
+            // end::return[]
         }
         // end::authenticate[]
 
