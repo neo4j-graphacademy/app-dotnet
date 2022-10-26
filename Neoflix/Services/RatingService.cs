@@ -88,7 +88,11 @@ namespace Neoflix.Services
             // end::throw[]
 
             // tag::addreturn[]
+<<<<<<< HEAD
             return updatedMovie;
+=======
+            return updatedMovie;
+>>>>>>> 821ac40 (Add ratings for a user.)
             // end::addreturn[]
         }
         // end::add[]
