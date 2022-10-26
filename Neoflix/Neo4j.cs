@@ -29,8 +29,8 @@ namespace Neoflix
         // tag::initDriver[]
         public static async Task InitDriverAsync(string uri, string username, string password)
         {
-            // TODO: Create an instance of the driver here
-            await Task.CompletedTask;
+            _driver = GraphDatabase.Driver(uri, AuthTokens.Basic(username, password));
+            await _driver.VerifyConnectivityAsync();
         }
         // end::initDriver[]
 
