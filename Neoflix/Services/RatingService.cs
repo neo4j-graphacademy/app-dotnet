@@ -72,8 +72,7 @@ namespace Neoflix.Services
                     RETURN m {
                         .*,
                         rating: r.rating
-                    } as movie", new {userId,
-                    tmdbId, rating});
+                    } as movie", new {userId, tmdbId, rating});
 
                 if (!await cursor.FetchAsync())
                     return null;
@@ -88,11 +87,7 @@ namespace Neoflix.Services
             // end::throw[]
 
             // tag::addreturn[]
-<<<<<<< HEAD
             return updatedMovie;
-=======
-            return updatedMovie;
->>>>>>> 821ac40 (Add ratings for a user.)
             // end::addreturn[]
         }
         // end::add[]

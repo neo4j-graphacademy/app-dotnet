@@ -67,7 +67,18 @@ namespace Neoflix.Services
                     // end::extract[]
                 });
 
-            return await Task.FromResult(safeProperties);
+                var safeProperties = SafeProperties(user);
+                safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
+
+                // tag::return-register[]
+                return safeProperties;
+                // end::return-register[]
+            }
+            catch (ClientException exception) when (exception.Code == "Neo.ClientError.Schema.ConstraintValidationFailed")
+            {
+                throw new ValidationException(exception.Message, email);
+            }
+            // end::catch[]
         }
         // end::register[]
 
