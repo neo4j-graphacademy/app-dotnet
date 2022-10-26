@@ -41,12 +41,15 @@ namespace Neoflix.Services
             var rounds = Config.UnpackPasswordConfig();
             var encrypted = BCryptNet.HashPassword(plainPassword, rounds);
 
-            await using var session = _driver.AsyncSession();
-
-            var user = await session.ExecuteWriteAsync(async tx =>
+            // tag::catch[]
+            try
             {
-                // tag::create[]
-                var query = @"
+                await using var session = _driver.AsyncSession();
+
+                var user = await session.ExecuteWriteAsync(async tx =>
+                {
+                    // tag::create[]
+                    var query = @"
                     CREATE (u:User {
                         userId: randomUuid(),
                         email: $email,
@@ -54,22 +57,28 @@ namespace Neoflix.Services
                         name: $name
                     })
                     RETURN u { .userId, .name, .email } as u";
-                var cursor = await tx.RunAsync(query, new {email, encrypted, name});
-                // end::create[]
+                    var cursor = await tx.RunAsync(query, new {email, encrypted, name});
+                    // end::create[]
 
-                // tag::extract[]
-                var record = await cursor.SingleAsync();
-                // Extract safe properties from the user node (`u`) in the first row
-                return record["u"].As<Dictionary<string, object>>();
-                // end::extract[]
-            });
+                    // tag::extract[]
+                    var record = await cursor.SingleAsync();
+                    // Extract safe properties from the user node (`u`) in the first row
+                    return record["u"].As<Dictionary<string, object>>();
+                    // end::extract[]
+                });
+               
+                var safeProperties = SafeProperties(user);
+                safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
-            var safeProperties = SafeProperties(user);
-            safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
-
-            // tag::return-register[]
-            return safeProperties;
-            // end::return-register[]
+                // tag::return-register[]
+                return safeProperties;
+                // end::return-register[]
+            }
+            catch (ClientException exception) when (exception.Code == "Neo.ClientError.Schema.ConstraintValidationFailed")
+            {
+                throw new ValidationException(exception.Message, email);
+            }
+            // end::catch[]
         }
         // end::register[]
 
