@@ -23,7 +23,7 @@ internal class Exceptions
         using var session = driver.AsyncSession();
         try
         {
-            await session.WriteTransactionAsync(async tx =>
+            await session.ExecuteWriteAsync(async tx =>
             {
                 var cursor = await tx.RunAsync(
                     "CREATE (u: User { email: $email }) RETURN u",

@@ -18,7 +18,7 @@ namespace Neoflix.Challenges
         {
             await base.SetupAsync();
             await using var session = Neo4j.Driver.AsyncSession();
-            await session.WriteTransactionAsync(tx =>
+            await session.ExecuteWriteAsync(tx =>
                 tx.RunAsync(@"
                     MERGE (u:User {userId: $userId})
                     SET u.email = $email",
@@ -59,9 +59,9 @@ namespace Neoflix.Challenges
             Assert.True(output["favorite"].As<bool>());
 
             var included = await service.AllAsync(UserId);
-           
+
             Assert.True(included.Any(x => x["tmdbId"].As<string>() == Goodfellas));
-            
+
             var removed = await service.RemoveAsync(UserId, Goodfellas);
 
             Assert.AreEqual(Goodfellas, removed["tmdbId"].As<string>());

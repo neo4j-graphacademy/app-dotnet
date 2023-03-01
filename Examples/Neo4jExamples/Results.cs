@@ -7,7 +7,7 @@ public class Results
     {
         using var session = driver.AsyncSession();
 
-        var res = await session.ReadTransactionAsync(async tx =>
+        var res = await session.ExecuteReadAsync(async tx =>
         {
             var cursor = await tx.RunAsync(@"
                     MATCH path = (person:Person)-[actedIn:ACTED_IN]->(movie:Movie)
@@ -67,7 +67,7 @@ public class Results
             long startId = actedIn.StartNodeId;
             long endId = actedIn.EndNodeId;
             // end::rel[]
-            
+
 
             // Working with Paths
             // tag::path[]
@@ -137,4 +137,3 @@ public class Results
         });
     }
 }
-

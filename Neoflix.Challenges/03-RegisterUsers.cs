@@ -17,7 +17,7 @@ namespace Neoflix.Challenges
             await base.SetupAsync();
 
             await using var session = Neo4j.Driver.AsyncSession();
-            await session.WriteTransactionAsync(tx =>
+            await session.ExecuteWriteAsync(tx =>
                 tx.RunAsync("MATCH (u:User {email:$email}) DETACH DELETE u",
                     new {email = Email}));
         }
@@ -38,7 +38,7 @@ namespace Neoflix.Challenges
             Assert.NotNull(output["token"]);
 
             await using var session = Neo4j.Driver.AsyncSession();
-            var result = await session.ReadTransactionAsync(async tx =>
+            var result = await session.ExecuteReadAsync(async tx =>
             {
                 var cursor = await tx.RunAsync("MATCH (u:User {email:$email}) RETURN u",
                     new {email = Email});

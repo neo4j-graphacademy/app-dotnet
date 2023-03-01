@@ -119,7 +119,7 @@ public class ExampleClass
 
         // tag::session.readTransaction[]
         // Run a query within a Read Transaction
-        var res = await session.ReadTransactionAsync(async tx => {
+        var res = await session.ExecuteReadAsync(async tx => {
             var cursor = await tx.RunAsync(@"
                 MATCH(p: Person) -[:ACTED_IN]->(m: Movie)
                 WHERE m.title = $title // <1>
@@ -137,7 +137,7 @@ public class ExampleClass
     {
         using var session = driver.AsyncSession();
         // tag::session.writeTransaction[]
-        await session.WriteTransactionAsync(async tx =>
+        await session.ExecuteWriteAsync(async tx =>
         {
             var cursor = await tx.RunAsync(
                 "CREATE (p:Person {name: $name})",
@@ -191,14 +191,14 @@ public class ExampleClass
     {
         // tag::sessionWithArgs[]
         // Create a Session for the `people` database
-        using var session = driver.AsyncSession(configBuilder => 
+        using var session = driver.AsyncSession(configBuilder =>
             configBuilder
                 .WithDefaultAccessMode(AccessMode.Write)
                 .WithDatabase("people"));
         // end::sessionWithArgs[]
 
         // Create a node within a write transaction
-        var result = await session.WriteTransactionAsync(async tx =>
+        var result = await session.ExecuteWriteAsync(async tx =>
         {
             var cursor = await tx.RunAsync("CREATE (p:Person {name: $name}) RETURN p",
                 new {name});
