@@ -47,14 +47,14 @@ namespace Neoflix.Services
         /// If the User or Movie cannot be found, a NotFoundException should be thrown
         /// </summary>
         /// <param name="userId">The userId for a user.</param>
-        /// <param name="movieId">The tmdbId for a Movie.</param>
+        /// <param name="tmdbId">The tmdbId for a Movie.</param>
         /// <param name="rating">The rating from 1-5.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.<br/>
         /// The task result contains a movie record with a rating property appended.
         /// </returns>
         // tag::add[]
-        public async Task<Dictionary<string, object>> AddAsync(string userId, string movieId, int rating)
+        public async Task<Dictionary<string, object>> AddAsync(string userId, string tmdbId, int rating)
         {
             // TODO: Convert the native integer into a Neo4j Integer
             // TODO: Save the rating in the database
