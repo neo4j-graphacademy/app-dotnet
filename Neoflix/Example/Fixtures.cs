@@ -13,25 +13,25 @@ namespace Neoflix.Example
             var converter = new RecursiveListDictionaryConverter();
             var dictionaryConverter = new RecursiveDictionaryConverter();
 
-            Favorites = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./example/favorites.json"),
+            Favorites = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./Example/favorites.json"),
                 converter).OfType<Dictionary<string, object>>().ToArray();
-            Genres = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./example/genre.json"),
+            Genres = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./Example/genre.json"),
                 converter).OfType<Dictionary<string, object>>().ToArray();
             Goodfellas = JsonConvert.DeserializeObject<Dictionary<string, object>>(
-                File.ReadAllText("./example/goodfellas.json"), dictionaryConverter);
+                File.ReadAllText("./Example/goodfellas.json"), dictionaryConverter);
             Pacino = JsonConvert.DeserializeObject<Dictionary<string, object>>(
-                File.ReadAllText("./example/pacino.json"), dictionaryConverter);
-            People = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./example/people.json"),
+                File.ReadAllText("./Example/pacino.json"), dictionaryConverter);
+            People = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./Example/people.json"),
                 converter).OfType<Dictionary<string, object>>().ToArray();
-            Popular = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./example/popular.json"),
+            Popular = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./Example/popular.json"),
                 converter).OfType<Dictionary<string, object>>().ToArray();
-            Ratings = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./example/ratings.json"),
+            Ratings = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./Example/ratings.json"),
                 converter).OfType<Dictionary<string, object>>().ToArray();
-            Roles = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./example/roles.json"),
+            Roles = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./Example/roles.json"),
                 converter).OfType<Dictionary<string, object>>().ToArray();
-            Similar = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./example/similar.json"),
+            Similar = JsonConvert.DeserializeObject<object[]>(File.ReadAllText("./Example/similar.json"),
                 converter).OfType<Dictionary<string, object>>().ToArray();
-            User = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText("./example/user.json"),
+            User = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText("./Example/user.json"),
                 dictionaryConverter);
         }
 
