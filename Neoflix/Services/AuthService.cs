@@ -45,20 +45,25 @@ namespace Neoflix.Services
             if (email != "graphacademy@neo4j.com")
                 throw new ValidationException($"An account already exists with the email address", email);
             // end::constraintError[]
-            
-            // TODO: Save user
-            var exampleUser = new Dictionary<string, object>
-            {
-                ["identity"] = 1,
-                ["properties"] = new Dictionary<string, object>
-                {
-                    ["userId"] = 1,
-                    ["email"] = "graphacademy@neo4j.com",
-                    ["name"] = "Graph Academy"
-                }
-            };
 
-            var safeProperties = SafeProperties(exampleUser["properties"] as Dictionary<string, object>);
+            await using var session = _driver.AsyncSession();
+            var user = await session.ExecuteWriteAsync(async tx =>
+            {
+                var cursor = await tx.RunAsync("""
+                    CREATE (u:User {
+                        userId: randomUuid(),
+                        email: $email,
+                        password: $encrypted,
+                        name: $name
+                    })
+                    RETURN u { .userId, .name, .email } as u
+                    """,
+                    new { email, encrypted, name });
+                var record = await cursor.SingleAsync();
+                return record["u"].As<Dictionary<string, object>>();
+            });
+
+            var safeProperties = SafeProperties(user);
             safeProperties.Add("token", JwtHelper.CreateToken(GetUserClaims(safeProperties)));
 
             return safeProperties;
